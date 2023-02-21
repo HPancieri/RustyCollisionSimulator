@@ -33,7 +33,8 @@ impl Particle {
 	}
 
 	pub fn set_velocity (&mut self, new_velocity: f32, new_direction: f32) {
-		self.velocity = Vector::new(new_velocity * new_direction.cos(), new_velocity * new_direction.sin());
+		self.velocity.set_x(new_velocity * new_direction.cos());
+		self.velocity.set_y(new_velocity * new_direction.sin());
 	}
 
 	pub fn invert_x_velocity (&mut self) { self.velocity.set_x(-self.velocity.get_x()); }

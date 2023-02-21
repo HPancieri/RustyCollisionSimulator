@@ -1,5 +1,5 @@
 mod controller;
 
 fn main() {
-    println!("Hello, world!");
+    controller::run();
 }

@@ -8,12 +8,12 @@ impl Vector {
 		Vector { x, y }
 	}
 
-	pub fn get_module (&self) -> f32 {
+	pub fn _get_module (&self) -> f32 {
 		let m: f32 = self.x.powi(2) + self.y.powi(2);
 		m.sqrt()
 	}
 
-	pub fn get_angle (&self) -> f32 {
+	pub fn _get_angle (&self) -> f32 {
 		self.y.atan2(self.x)
 	}
 

@@ -32,9 +32,9 @@ impl Particle {
 		self.position.add(&self.velocity);
 	}
 
-	pub fn set_velocity (&mut self, new_velocity: f32, new_direction: f32) {
-		self.velocity.set_x(new_velocity * new_direction.cos());
-		self.velocity.set_y(new_velocity * new_direction.sin());
+	pub fn set_velocity (&mut self, vx: f32, vy: f32) {
+		self.velocity.set_x(vx);
+		self.velocity.set_y(vy);
 	}
 
 	pub fn invert_x_velocity (&mut self) { self.velocity.set_x(-self.velocity.get_x()); }
@@ -48,6 +48,44 @@ impl Particle {
 
 	pub fn get_x_pos (&self) -> f32 { self.position.get_x() }
 	pub fn get_y_pos (&self) -> f32 { self.position.get_y() }
-
+	pub fn _get_x_vel (&self) -> f32 { self.velocity.get_x() }
+	pub fn _get_y_vel (&self) -> f32 { self.velocity.get_y() }
 	pub fn get_r (&self) -> f32 { self.radius }
+	pub fn _get_mass (&self) -> f32 { self.mass }
+
+
+	pub fn get_distance_between (p1: &Particle, p2: &Particle) -> f32 {
+		let d: f32 = (p1.position.get_x() - p2.position.get_x()).powi(2) + (p1.position.get_y() - p2.position.get_y()).powi(2);
+		d.sqrt()
+	}
+ 
+
+	pub fn check_collision (p1: &Particle, p2: &Particle) -> bool {
+		Particle::get_distance_between(p1, p2) <= p1.radius + p2.radius
+	}
+
+
+	pub fn collide (particles: &mut Vec<Particle>, i: usize, j: usize) {
+		// Getting particle 1 information
+		let m1: f32 = particles[i].mass;
+		let v1x: f32 = particles[i].velocity.get_x();
+		let v1y: f32 = particles[i].velocity.get_y();
+
+		//  Getting particle 2 information
+		let m2: f32 = particles[j].mass;
+		let v2x: f32 = particles[j].velocity.get_x();
+		let v2y: f32 = particles[j].velocity.get_y();
+
+		// Calculating final velocity for particle 1
+		let v1xf: f32 = (m1 - m2)/(m1 + m2) * v1x + (2.0*m2)/(m1 + m2) * v2x;
+		let v1yf: f32 = (m1 - m2)/(m1 + m2) * v1y + (2.0*m2)/(m1 + m2) * v2y;
+
+		// Calculating final velocity for particle 2
+		let v2xf: f32 = (m2 - m1)/(m1 + m2) * v2x + (2.0*m1)/(m1 + m2) * v1x;
+		let v2yf: f32 = (m2 - m1)/(m1 + m2) * v2y + (2.0*m1)/(m1 + m2) * v1y;
+
+		// Setting new velocity values for x and y directions
+		particles[i].set_velocity(v1xf, v1yf);
+		particles[j].set_velocity(v2xf, v2yf);
+	}
 }

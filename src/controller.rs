@@ -60,11 +60,9 @@ impl WindowHandler for MyWindowHandler {
 		}
 
 		for i in 0..self.particles.len() {
-			for j in i..self.particles.len() {
-				if i != j {
-					if Particle::check_collision(&self.particles[i], &self.particles[j]) {
-						Particle::collide(&mut self.particles, i, j);
-					}
+			for j in i+1..self.particles.len() {
+				if Particle::check_collision(&self.particles[i], &self.particles[j]) {
+					Particle::collide(&mut self.particles, i, j);
 				}
 			}
 		}

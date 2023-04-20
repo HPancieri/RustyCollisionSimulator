@@ -37,6 +37,11 @@ impl Particle {
 		self.velocity.set_y(vy);
 	}
 
+	pub fn set_position (&mut self, px: f32, py: f32) {
+		self.position.set_x(px);
+		self.position.set_x(py);
+	}
+
 	pub fn invert_x_velocity (&mut self) { self.velocity.set_x(-self.velocity.get_x()); }
 
 	pub fn invert_y_velocity (&mut self) { self.velocity.set_y(-self.velocity.get_y()); }

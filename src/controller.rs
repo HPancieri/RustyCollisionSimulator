@@ -21,7 +21,15 @@ pub fn run(number_of_particles: i32) {
 
 	// Positioning particles
 	for _ in 0..number_of_particles {
-		win.particles.push(Particle::new(rng.gen_range(60.0..1140.0), rng.gen_range(60.0..740.0)));
+		let mut p: Particle = Particle::new(rng.gen_range(60.0..1140.0), rng.gen_range(60.0..740.0));
+
+		for i in 0..win.particles.len() {
+			while Particle::check_collision(&win.particles[i], &p) {
+				p.set_position(rng.gen_range(60.0..1140.0), rng.gen_range(60.0..740.0));
+			}
+		}
+
+		win.particles.push(p);
 	}
 
 	window.run_loop(win);
@@ -59,6 +67,7 @@ impl WindowHandler for MyWindowHandler {
 			}
 		}
 
+		// Checking for collisions amongst the particles themselves
 		for i in 0..self.particles.len() {
 			for j in i+1..self.particles.len() {
 				if Particle::check_collision(&self.particles[i], &self.particles[j]) {
